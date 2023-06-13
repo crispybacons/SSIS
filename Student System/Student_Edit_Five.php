@@ -1,0 +1,228 @@
+<?php
+	// only logged in users can access this page
+
+	// create an if-else statement that checks the $_SESSION['username'];
+	session_start();
+	if(!isset($_SESSION['Username'])) {
+		echo "<script> alert('ACCESS DENIED! Login credentials required'); window.location='login.php' </script>";
+		exit();
+	}
+    
+    include("Connect.php");
+?>
+    
+
+<!Doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+
+        <title></title>
+    </head>
+    <body>
+        <?php
+                if(isset($_GET['student_lrn']) && !empty($_GET['student_lrn'])) {
+
+                    $student_lrn = $_GET['student_lrn'];
+
+                    $sql = "SELECT * FROM student_info WHERE student_lrn = '$student_lrn';";
+                    $query = mysqli_query($connect, $sql);
+                    $fetch = mysqli_fetch_array($query);
+                }
+        ?>
+        <?php
+                $sql = "SELECT * FROM `student_ranking`                                          
+                        INNER JOIN student_info ON `student_ranking`.`student_lrn` = student_info.student_lrn
+                        WHERE student_ranking.student_lrn = '$student_lrn';";
+
+                $query = mysqli_query($connect, $sql);
+                $fetch = mysqli_fetch_array($query);
+        ?>        
+        <nav class="navbar navbar-light bg-light justify-content-between">
+            <a class="navbar-brand"></a>
+            <a class="btn btn-outline-danger my-2 my-sm-0" type="submit" href="Logout.php">Sign out</a>
+        </nav>
+        <div class="row mt-4">
+            <div class="col-6 col-md-3">
+                <div class="container">
+                    <div class="list-group">
+                        <a href="Profile.php" class="list-group-item list-group-item-action">Home</a>
+                        <a href="Student_Search.php" class="list-group-item list-group-item-action active">Search Student</a>
+                        <a href="Courses_Search.php" class="list-group-item list-group-item-action">Search Courses</a>
+                        <a href="Student_Register.php" class="list-group-item list-group-item-action">Register Student</a>
+                        <a href="Add_Courses.php" class="list-group-item list-group-item-action">Add Course</a>   
+                        <a href="Student_Enroll.php" class="list-group-item list-group-item-action">Enroll Student</a>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-11 col-md-9">
+               <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="Student_Search.php">Search Student</a></li>
+                                    <?php                                           
+                                        echo "<li class='breadcrumb-item'><a href='Student_School.php?student_lrn={$fetch['student_lrn']}'>Student Profile</a></li>";   
+                                    ?> 
+                                    <li class="breadcrumb-item active" aria-current="page">About School</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Additional Info</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Family Background</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <h2>Siblings Information</h2>
+                                <h5><small>(Please name below the siblings from eldest to youngest inculding yourself)</small></h5>
+                                <hr>
+                            </div>    
+                            <form method="POST">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail4">Name</label>
+                                        <input type="text" class="form-control" id="inputEmail4" value="<?php echo $fetch['Sibling_name']; ?>" name="SiblingsName1">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword4">School/Place of Work</label>
+                                        <input type="text" class="form-control" id="inputPassword4" value="<?php echo $fetch['School_work']; ?>" name="SiblingsPlace1">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword4">Age</label>
+                                        <input type="text" class="form-control" id="inputPassword4" value="<?php echo $fetch['Age']; ?>" name="SiblingsAge1">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail4">Name</label>
+                                        <input type="text" class="form-control" id="inputEmail4" value="<?php echo $fetch['Sibling_name_2']; ?>" name="SiblingsName2">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword4">School/Place of Work</label>
+                                        <input type="text" class="form-control" id="inputPassword4" value="<?php echo $fetch['School_work_2']; ?>" name="SiblingsPlace2">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword4">Age</label>
+                                        <input type="text" class="form-control" id="inputPassword4" value="<?php echo $fetch['Age_2']; ?>" name="SiblingsAge2">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail4">Name</label>
+                                        <input type="text" class="form-control" id="inputEmail4" value="<?php echo $fetch['Sibling_name_3']; ?>" name="SiblingsName3">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword4">School/Place of Work</label>
+                                        <input type="text" class="form-control" id="inputPassword4" value="<?php echo $fetch['School_work_3']; ?>" name="SiblingsPlace3">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword4">Age</label>
+                                        <input type="text" class="form-control" id="inputPassword4" value="<?php echo $fetch['Age_3']; ?>" name="SiblingsAge3">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail4">Name</label>
+                                        <input type="text" class="form-control" id="inputEmail4" value="<?php echo $fetch['Sibling_name_4']; ?>" name="SiblingsName4">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword4">School/Place of Work</label>
+                                        <input type="text" class="form-control" id="inputPassword4" value="<?php echo $fetch['School_work_4']; ?>" name="SiblingsPlace4">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword4">Age</label>
+                                        <input type="text" class="form-control" id="inputPassword4" value="<?php echo $fetch['Age_4']; ?>" name="SiblingsAge4">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="inputEmail4">Name</label>
+                                        <input type="text" class="form-control" id="inputEmail4" value="<?php echo $fetch['Sibling_name_5']; ?>" name="SiblingsName5">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword4">School/Place of Work</label>
+                                        <input type="text" class="form-control" id="inputPassword4" value="<?php echo $fetch['School_work_5']; ?>" name="SiblingsPlace5">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputPassword4">Age</label>
+                                        <input type="text" class="form-control" id="inputPassword4" value="<?php echo $fetch['Age_5']; ?>" name="SiblingsAge5">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <?php
+                                            $sql = "SELECT * FROM student_info";
+                                            $query = mysqli_query($connect, $sql);
+                                            while($fetch = mysqli_fetch_array($query)) {
+                                        ?>
+                                        <input class="form-check-input" type="radio" id="gridCheck" value="<?php echo $fetch['student_lrn']; ?>" name="Confirmation" required>
+                                        <?php
+                                            }
+                                        ?>
+                                        <label class="form-check-label" for="gridCheck">
+                                            Confirm informations
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" name="SubmitBtn">Edit Information</button>
+                                </form> 
+                            <?php
+                                if(isset($_POST['SubmitBtn'])) {  
+                                    
+                                    $Confirmation = trim($_POST['Confirmation']);
+                                    $SiblingsName1 = trim($_POST['SiblingsName1']);
+                                    $SiblingsPlace1 = trim($_POST['SiblingsPlace1']);  
+                                    $SiblingsAge1 = trim($_POST['SiblingsAge1']);
+                                    $SiblingsName2 = trim($_POST['SiblingsName2']);
+                                    $SiblingsPlace2 = trim($_POST['SiblingsPlace2']);  
+                                    $SiblingsAge2 = trim($_POST['SiblingsAge2']);
+                                    $SiblingsName3 = trim($_POST['SiblingsName3']);
+                                    $SiblingsPlace3 = trim($_POST['SiblingsPlace3']);  
+                                    $SiblingsAge3 = trim($_POST['SiblingsAge3']);
+                                    $SiblingsName4 = trim($_POST['SiblingsName4']);
+                                    $SiblingsPlace4 = trim($_POST['SiblingsPlace4']);  
+                                    $SiblingsAge4 = trim($_POST['SiblingsAge4']);
+                                    $SiblingsName5 = trim($_POST['SiblingsName5']);
+                                    $SiblingsPlace5 = trim($_POST['SiblingsPlace5']);  
+                                    $SiblingsAge5 = trim($_POST['SiblingsAge5']);
+                                    
+
+                                    if(empty($SiblingsName1)) {
+                                        echo "<hr><p class='alert alert-danger' role='alert'> Please enter the None if you do not have any sibling</p>";
+                                    }elseif(empty($SiblingsName1)) {
+                                        echo "<hr><p class='alert alert-danger' role='alert''> Please enter the Student's Siblings school/place of work </p>";
+                                    }elseif(empty($SiblingsAge1)) {
+                                        echo "<hr><p class='alert alert-danger' role='alert'> Please enter the Student's Siblings age </p>";
+                                    }else {
+                                        
+                                        
+                                        $sql = "UPDATE student_ranking SET Sibling_name = '$SiblingsName1', Sibling_name_2 = '$SiblingsName2', Sibling_name_3 = '$SiblingsName3', Sibling_name_4 = '$SiblingsName4', Sibling_name_5 = '$SiblingsName5', School_work = '$SiblingsPlace1', School_work_2 = '$SiblingsName2', School_work_5 = '$SiblingsPlace3', School_work_4 = '$SiblingsPlace4', School_work_5 = '$SiblingsPlace5', Age = '$SiblingsAge1', Age_2 = '$SiblingsAge2', Age_3 = '$SiblingsAge3', Age_4 = '$SiblingsAge4', Age_5 = '$SiblingsAge5', student_lrn = '$Confirmation'";
+
+                                        
+                                        if(mysqli_query($connect, $sql)) {
+                                            echo "<script> alert('Information successfully Submited'); 
+                                                window.location='About_Four.php?student_lrn={$Confirmation}';</script>";
+                                        } else {
+                                            echo "<script> alert('Failed to Submit information'); </script>";
+                                        }
+                                    }    
+                                }
+                            ?>
+                        </div>
+                    </div>
+               </div>
+            </div>
+        </div>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/popper.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </body>
+</html>
