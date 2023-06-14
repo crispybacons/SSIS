@@ -1,5 +1,4 @@
-# SSIS
-Student Information System Web App using HTML/CCS/PHP
+# Student Information System Web App using HTML/CCS/PHP
 
 
 This is my first web app so if there are errors please bear with me, this was created when I was on my highschool years. 
